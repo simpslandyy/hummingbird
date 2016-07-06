@@ -19,9 +19,6 @@ public class Library {
 		Library lib = new Library();
 		HttpRequest hum = new HttpRequest();
 		JSONArray search = hum.getByTitle("gundam");
-//		JSONArray search = hum.getById(55);
-		
-//		System.out.print(search.toString());
 		
 		lib.addToLibrary(search);
 		System.out.println(lib.toString());
@@ -34,9 +31,9 @@ public class Library {
 			Anime item = new Anime();
 			item.parseObject((JSONObject) anime);
 			this.library.add(item);
-			
 		}
 	}
+	
 
 	@Override
 	public String toString() {
