@@ -1,13 +1,13 @@
 package hummingbird;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.json.JSONObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Anime {
 	private int id;
@@ -16,8 +16,8 @@ public class Anime {
 	private String url;
 	private String title;
 	private String alt_title;
-	private String ep_count;
-	private String ep_length;
+	private int ep_count;
+	private int ep_length;
 	private String cover_image;
 	private String synposis;
 	private String show_type;
@@ -25,55 +25,48 @@ public class Anime {
 	private Date finish_airing;
 	private double community_rating;
 	private String age_rating;
-	private String genres;
-	private String endpoint;
+	private JSONArray genres;	
 	
 	public Anime() {
-		this.endpoint = "https://hummingbird.me/api/v1";
-	}
-
-	public void getById(int animeID) throws IOException {
-		// modify the endpoint so that it gets by id.
-		String endpoint = String.format("%s/anime/%d", this.endpoint, animeID);
 		
-		// convert string object to a url object
-		URL obj = new URL(endpoint);
-		
-		// Open an HTTP connection, default-method: GET
-		HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-		
-		// retrieve status code
-		int statusCode = conn.getResponseCode();
-		System.out.println("Hitting this endpoint: " + endpoint);
-		System.out.println("Status code is: " + statusCode);
-		
-		// pipes the input stream into a buffer that we can read from (like reading from a file)
-		BufferedReader buff = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		String line;
-		StringBuffer res = new StringBuffer();
-		
-		// while each line of the file doesn't equal null, append it to another StringBuffer
-		while((line = buff.readLine()) != null) {
-			res.append(line);
+	} 
+	
+	/*
+	 * parseObject
+	 * 	parses JSONObject containing information about an anime, and constructs an AnimeObject
+	 */
+	public void parseObject(JSONObject animeObj) throws JSONException, ParseException {		
+		this.id = animeObj.getInt("id");
+		this.mal_id = animeObj.getInt("mal_id");
+		this.status = animeObj.getString("slug");
+		this.url = animeObj.getString("url");
+		this.title = animeObj.getString("title");
+		this.alt_title = animeObj.getString("alternate_title");
+		this.ep_count = animeObj.getInt("episode_count");
+		this.ep_length = animeObj.getInt("episode_length");
+		this.cover_image = animeObj.getString("cover_image");
+		 
+		if (animeObj.has("synopsis")) {
+			this.synposis = animeObj.getString("synopsis");			
 		}
 		
-		// close the buffer
-		buff.close();
-
-		System.out.println(res.toString());
+		this.show_type = animeObj.getString("show_type");
 		
-		// convert JSON string to a JSON Object
-		JSONObject jsonObj = new JSONObject(res.toString());
-		
-		// getInt returns any values in the JSON that are ints, getString is the same thing but for strings
-		System.out.println(jsonObj.getInt("id"));
-		
-		
-		
+		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
+		this.start_airing = df.parse(animeObj.getString("started_airing"));
+		this.finish_airing = df.parse(animeObj.getString("finished_airing"));
+		this.community_rating = animeObj.getDouble("community_rating");
+		this.age_rating = animeObj.getString("age_rating");
+		this.genres = (JSONArray) animeObj.get("genres");	
 	}
 	
-	public static void main(String[] args) throws IOException {
-		Anime some = new Anime(); // create a new anime object
-		some.getById(55); // call the getById method
+	@Override
+	public String toString() {
+		return "Anime [id=" + id + ", mal_id=" + mal_id + ", status=" + status + ", url=" + url + ", title=" + title
+				+ ", alt_title=" + alt_title + ", ep_count=" + ep_count + ", ep_length=" + ep_length + ", cover_image="
+				+ cover_image + ", synposis=" + synposis + ", show_type=" + show_type + ", start_airing=" + start_airing
+				+ ", finish_airing=" + finish_airing + ", community_rating=" + community_rating + ", age_rating="
+				+ age_rating + ", genres=" + genres + "]";
 	}
+	
 }
