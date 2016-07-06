@@ -41,29 +41,30 @@ public class Anime {
 		this.status = animeObj.getString("slug");
 		this.url = animeObj.getString("url");
 		this.title = animeObj.getString("title");
-		
-		// Type error
-//		if (animeObj.has("alternate_title") && animeObj.get("alternate_title") != null) {
-//			System.out.println(animeObj.has("alternate_title"));
-//			this.alt_title = animeObj.getString("alternate_title");	
-//		}
-//		
 		this.ep_count = animeObj.getInt("episode_count");
 		this.ep_length = animeObj.getInt("episode_length");
 		this.cover_image = animeObj.getString("cover_image");
-		 
-		if (animeObj.has("synopsis") && animeObj.get("synopsis") != null) {
+		this.show_type = animeObj.getString("show_type");
+		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
+		this.start_airing = df.parse(animeObj.getString("started_airing"));		
+		this.community_rating = animeObj.getDouble("community_rating");
+		this.genres = (JSONArray) animeObj.get("genres");	
+		
+		// The following may return null values, so we gotta error check
+		// The null value returned is of type "Object"
+		if (animeObj.has("alternate_title") && !(animeObj.get("alternate_title") instanceof Object)) {
+			this.alt_title = animeObj.getString("alternate_title");	
+		}
+		if (animeObj.has("synopsis") && !(animeObj.get("synopsis") instanceof Object)) {
 			this.synposis = animeObj.getString("synopsis");			
 		}
+		if (animeObj.has("finished_airing") && !(animeObj.get("finished_airing") instanceof Object)) {
+			this.finish_airing = df.parse(animeObj.getString("finished_airing"));
+		}
+		if (animeObj.has("age_rating") && !(animeObj.get("age_rating") instanceof Object)) {
+			this.age_rating = animeObj.getString("age_rating"); 
+		}
 		
-		this.show_type = animeObj.getString("show_type");
-		
-		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
-		this.start_airing = df.parse(animeObj.getString("started_airing"));
-//		this.finish_airing = df.parse(animeObj.getString("finished_airing")); TYPE ERR
-		this.community_rating = animeObj.getDouble("community_rating");
-//		this.age_rating = animeObj.getString("age_rating"); TYPE ERR
-		this.genres = (JSONArray) animeObj.get("genres");	
 	}
 	
 	@Override
