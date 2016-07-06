@@ -66,6 +66,8 @@ public class HttpRequest {
 	 *	return a JSON object of an HTTP response
 	 */
 	public JSONArray getResponse(HttpURLConnection c) throws IOException {
+		JSONArray jsonArr;
+
 		// pipes the input stream into a buffer that we can read from (like reading from a file)
 		BufferedReader buff = new BufferedReader(new InputStreamReader(c.getInputStream()));
 		String line;
@@ -75,28 +77,21 @@ public class HttpRequest {
 		while((line = buff.readLine()) != null) {
 			res.append(line);
 		}
-		
-		// close the buffer
-		buff.close();
-		
-		JSONArray jsonArr = new JSONArray(res.toString());
-		
-//		System.out.println(jsonArr);
-		
-//		// convert JSON string to a JSON Object
-//		JSONObject jsonObj = new JSONObject(res.toString());
-//		
-//		return jsonObj;
-		
-		return jsonArr;
-	}
-	
-	public static void main(String[] args) throws JSONException, IOException, ParseException {
-		HttpRequest http = new HttpRequest();
-		
-		JSONArray resA = http.getByTitle("gundam");
-		System.out.println(resA.get(1));
 
+		buff.close();
+			
+		// Determine if the response is a single object or array of objects
+		// If the first character is '[' then it's an array of objects
+		if (res.charAt(0) == '[') {
+			jsonArr = new JSONArray(res.toString());
+	
+		} else {
+			String toStringArr = String.format("[%s]", res.toString());
+			jsonArr = new JSONArray(toStringArr);
+		}
+		
+				
+		return jsonArr;
 	}
 
 }

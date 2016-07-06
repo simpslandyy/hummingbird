@@ -41,12 +41,18 @@ public class Anime {
 		this.status = animeObj.getString("slug");
 		this.url = animeObj.getString("url");
 		this.title = animeObj.getString("title");
-		this.alt_title = animeObj.getString("alternate_title");
+		
+		// Type error
+//		if (animeObj.has("alternate_title") && animeObj.get("alternate_title") != null) {
+//			System.out.println(animeObj.has("alternate_title"));
+//			this.alt_title = animeObj.getString("alternate_title");	
+//		}
+//		
 		this.ep_count = animeObj.getInt("episode_count");
 		this.ep_length = animeObj.getInt("episode_length");
 		this.cover_image = animeObj.getString("cover_image");
 		 
-		if (animeObj.has("synopsis")) {
+		if (animeObj.has("synopsis") && animeObj.get("synopsis") != null) {
 			this.synposis = animeObj.getString("synopsis");			
 		}
 		
@@ -54,19 +60,19 @@ public class Anime {
 		
 		DateFormat df = new SimpleDateFormat("YYYY-MM-DD");
 		this.start_airing = df.parse(animeObj.getString("started_airing"));
-		this.finish_airing = df.parse(animeObj.getString("finished_airing"));
+//		this.finish_airing = df.parse(animeObj.getString("finished_airing")); TYPE ERR
 		this.community_rating = animeObj.getDouble("community_rating");
-		this.age_rating = animeObj.getString("age_rating");
+//		this.age_rating = animeObj.getString("age_rating"); TYPE ERR
 		this.genres = (JSONArray) animeObj.get("genres");	
 	}
 	
 	@Override
 	public String toString() {
-		return "Anime [id=" + id + ", mal_id=" + mal_id + ", status=" + status + ", url=" + url + ", title=" + title
-				+ ", alt_title=" + alt_title + ", ep_count=" + ep_count + ", ep_length=" + ep_length + ", cover_image="
-				+ cover_image + ", synposis=" + synposis + ", show_type=" + show_type + ", start_airing=" + start_airing
-				+ ", finish_airing=" + finish_airing + ", community_rating=" + community_rating + ", age_rating="
-				+ age_rating + ", genres=" + genres + "]";
+		return "\n {id=" + id + ",\n mal_id=" + mal_id + ",\n status=" + status + ",\n url=" + url + ",\n title=" + title
+				+ ",\n alt_title=" + alt_title + ",\n ep_count=" + ep_count + ",\n ep_length=" + ep_length + ",\n cover_image="
+				+ cover_image + ",\n synposis=" + synposis + ",\n show_type=" + show_type + ",\n start_airing=" + start_airing
+				+ ",\n finish_airing=" + finish_airing + ",\n community_rating=" + community_rating + ",\n age_rating="
+				+ age_rating + ",\n genres=" + genres + "}\n";
 	}
 	
 }
