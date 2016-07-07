@@ -34,6 +34,9 @@ public class Library {
 		}
 	}
 	
+	public void filterByShowType(String type) {
+		
+	}
 
 	@Override
 	public String toString() {
