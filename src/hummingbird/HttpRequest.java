@@ -49,9 +49,9 @@ public class HttpRequest {
 	 * getByTitle
 	 * 	return a JSONObject containing information about anime title(s)
 	 */
-	public JSONArray getByTitle(String animeTitle) throws IOException, JSONException, ParseException {
+	public JSONArray getByQuery(String query) throws IOException, JSONException, ParseException {
 		// modify the end-point so that it gets by a title
-		String endpoint = String.format("%s/search/anime/?query=%s", this.endpoint, animeTitle);
+		String endpoint = String.format("%s/search/anime/?query=%s", this.endpoint, query);
 		
 		URL obj = new URL(endpoint);
 		HttpURLConnection conn = (HttpURLConnection) obj.openConnection();

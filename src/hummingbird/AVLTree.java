@@ -57,7 +57,7 @@ public class AVLTree {
 			if (getHeight(left.getLeft()) >= getHeight(left.getRight())) {
 				root = this.rotateRight(root);
 			} else {
-				root = this.rotateLeftRight();
+//				root = this.rotateLeftRight();
 			}
 		} else if (root.getBf() == 2) {
 			AVLNode right;
@@ -66,7 +66,7 @@ public class AVLTree {
 			if (getHeight(right.getRight()) >= getHeight(right.getLeft())) {
 				root = this.rotateLeft(root);
 			} else {
-				root = this.rotateRightLeft();
+//				root = this.rotateRightLeft();
 			}
 		}
 		
